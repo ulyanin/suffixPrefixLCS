@@ -14,8 +14,10 @@ std::vector< std::vector<size_t> > calculateSuffixPrefixLCS_long(const std::stri
     );
     int n = s.length();
     int m = t.length();
-    size_t dp[m + 1][n + 1];
-    memset(dp, 0, sizeof(dp));
+    //size_t dp[m + 1][n + 1];
+    std::vector< std::vector<size_t> > dp(
+            std::vector<std::vector<size_t > > (m + 1, std::vector<size_t > (n + 1))
+    );
     for (int i = 0; i < m; ++i) {
         // for step Zi dp[j][k] = lcs(t[i..j], s[1..k])
         for (int k = 1; k <= n; ++k) {
@@ -48,14 +50,12 @@ std::vector< std::vector<size_t> > calculateSuffixPrefixLCS_long2(const std::str
     std::vector< std::vector<size_t> > dp[2];
     for (int i = 0; i < 2; ++i)
         dp[i] = std::vector<std::vector<size_t > > (m + 1, std::vector<size_t > (m + 1));
-    //memset(dp, 0, sizeof(dp));
     for (int k = 1; k <= n; ++k) {
         dp[k & 1].assign(m + 1, std::vector<size_t > (m + 1, 0));
         //memset(dp[k & 1], 0, sizeof(dp[k & 1]));
         for (int i = 0; i < m; ++i) {
-            // for step k, i dp[k][j] = lcs(t[i..j], s[1..k])
-            // so for step I store only current dp[2][j] not dp[2][i][j]
-            // and for k only two arrays, because other k do not needed
+            // for step k, i dp[k][i][j] = lcs(t[i..j], s[1..k])
+            // and for step k only two arrays, because other k do not needed
             dp[k & 1][i][i] = std::max((size_t)(t[i] == s[k - 1]), dp[(k + 1) & 1][i][i]);
             for (int j = i + 1; j < m; ++j) {
                 dp[k & 1][i][j] = std::max(dp[k & 1][i][j - 1], dp[(k + 1) & 1][i][j]);
