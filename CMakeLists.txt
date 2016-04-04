@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.4)
 project(suffixPrefixLCS)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lgtest")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -lgtest -Wall")
 set(SOURCE_FILES main.cpp suffix_prefix_lcs.cpp  suffix_prefix_lcs_long.cpp)
 add_executable(suffixPrefixLCS ${SOURCE_FILES})
 

@@ -53,8 +53,8 @@ std::vector<
             m = B.size();
     std::vector< std::vector<size_t> > ans(n, std::vector<size_t>(m));
     auto tmp = calculateSuffixPrefixLCS_reversed(B, A);
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = 0; j < m; ++j) {
             ans[i][j] = tmp[j][i];
         }
     }

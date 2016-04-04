@@ -50,6 +50,7 @@ public:
     virtual bool readAnswerFromFile(const std::string &fname) {
         std::ifstream in_f;
         in_f.open(fname);
+        std::cout << fname << std::endl;
         if (!in_f.good())
             return false;
         size_t sizeA, sizeB;
@@ -57,7 +58,7 @@ public:
         getline(in_f, B_);
         sizeA = A_.size();
         sizeB = B_.size();
-        ans_.resize(sizeA, std::vector<size_t> (sizeB));
+        ans_.assign(sizeA, std::vector<size_t> (sizeB));
         for (size_t i = 0; i < sizeA; ++i) {
             for (size_t j = 0; j < sizeB; ++j) {
                 in_f >> ans_[i][j];
@@ -79,8 +80,8 @@ public:
     {
         size_t n = A_.size(),
                m = B_.size();
-        for (int i = 0; i < n; ++i) {
-            for (int j = 0; j < m; ++j) {
+        for (size_t i = 0; i < n; ++i) {
+            for (size_t j = 0; j < m; ++j) {
                 EXPECT_EQ(ans_[i][j], test_[i][j])
                                     << "for substring A[" << i + 1 << "..|A|]=\""
                                     << A_.substr(i) << "\"" <<std::endl
@@ -201,7 +202,7 @@ TEST_F(SuffixPrefixLCSTests, BigTests)
 TEST_F(SuffixPrefixLCSTests, MaxTests)
 {
     size_t maxTestSize = 2000;
-    int tests = 4;
+    int tests = 2;
     randomRange = std::uniform_int_distribution<size_t>(maxTestSize / 2, maxTestSize - 1);
     for (int t = 0; t < tests; ++t) {
         GenerateTest(randomRange(engine), randomRange(engine), t, ' ', 127);
@@ -221,14 +222,15 @@ TEST_F(SuffixPrefixLCSTests, MaxTests)
 
 TEST_F(SuffixPrefixLCSTests, TestFromFile)
 {
-    int testNumber = 10;
-    for (int t = 0; t < testNumber; ++t) {
+    int startTest = 0;
+    int lastTest = 20;
+    for (int t = startTest; t <= lastTest; ++t) {
         if (!readAnswerFromFile(std::string("tests/") + std::to_string(t)))
-            break;
-        size_t sizeA, sizeB;
-        sizeA = A_.length();
-        sizeB = B_.length();
-        CalculateAnswer();
+            continue;
+        std::cout << "read test; size " << A_.size() << "x" << B_.size() << std::endl;
+        std::cout << "\tstarting super dp O(n^2) solution" << std::endl;
+        double s2 = CalculateAnswer();
+        std::cout << "\t\tcompleted for a " << s2 << " seconds" << std::endl;
         Compare();
     }
 }

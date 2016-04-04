@@ -23,11 +23,11 @@ void generateTest(std::string &A, std::string &B, size_t ASize, size_t BSize, ch
     }
 }
 
-void generate(const std::string &testPath, size_t testsAmount, size_t ASize, size_t BSize, char lSym=' ', char rSym='\127')
+void generate(const std::string &testPath, size_t firstTest, size_t testsAmount, size_t ASize, size_t BSize, char lSym=' ', char rSym='\127')
 {
     std::uniform_int_distribution<int> randomRangeA(ASize / 2, ASize),
                                        randomRangeB(BSize / 2, BSize);
-    for (int i = 0; i < testsAmount; ++i) {
+    for (int i = firstTest; i + firstTest < testsAmount; ++i) {
         std::ofstream out_f(testPath + std::to_string(i));
         std::string A, B;
         std::cout << "generate test #" << i << std::endl;
@@ -49,12 +49,13 @@ void generate(const std::string &testPath, size_t testsAmount, size_t ASize, siz
 
 int main(int argc, char ** argv)
 {
+    //[1]testPath [2]startTestNumver [3]testsAmount [4]AMaxsize [5]BMaxSize [6]lowSymbol [7]highSymbol
     char lSym = 'a';
     char rSym = 'z';
-    if (argc > 5) {
-        lSym = argv[5][0];
-        rSym = argv[6][0];
+    if (argc > 6) {
+        lSym = argv[6][0];
+        rSym = argv[7][0];
     }
-    generate(argv[1], std::stoi(argv[2]), std::stoi(argv[3]), std::stoi(argv[4]), lSym, rSym);
+    generate(argv[1], std::stoi(argv[2]), std::stoi(argv[3]), std::stoi(argv[4]), std::stoi(argv[5]), lSym, rSym);
     return 0;
 }
