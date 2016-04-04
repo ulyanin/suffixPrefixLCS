@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "suffix_prefix_lcs.h"
 #include "suffix_prefix_lcs_long.h"
 #include <gtest/gtest.h>
@@ -44,6 +45,26 @@ public:
         ans_ = calculateSuffixPrefixLCS_long(A_, B_);
         auto end(std::chrono::steady_clock::now());
         return std::chrono::duration_cast<std::chrono::duration<double> > (end - start).count();
+    }
+
+    virtual bool readAnswerFromFile(const std::string &fname) {
+        std::ifstream in_f;
+        in_f.open(fname);
+        if (!in_f.good())
+            return false;
+        size_t sizeA, sizeB;
+        getline(in_f, A_);
+        getline(in_f, B_);
+        sizeA = A_.size();
+        sizeB = B_.size();
+        ans_.resize(sizeA, std::vector<size_t> (sizeB));
+        for (size_t i = 0; i < sizeA; ++i) {
+            for (size_t j = 0; j < sizeB; ++j) {
+                in_f >> ans_[i][j];
+            }
+        }
+        in_f.close();
+        return true;
     }
 
     virtual double CalculateAnswer()
@@ -107,7 +128,7 @@ TEST_F(SuffixPrefixLCSTests, simpleTests)
     size_t AMaxSize = 15;
     size_t BMaxSize = 15;
     for (int t = 0; t < tests; ++t) {
-        GenerateTest(AMaxSize, BMaxSize, t);
+        GenerateTest(AMaxSize, BMaxSize, t, 'a', 'i');
         //std::cout << A_ << std::endl;
         //std::cout << B_ << std::endl;
         GenerateRightAnswer();
@@ -197,6 +218,21 @@ TEST_F(SuffixPrefixLCSTests, MaxTests)
         Compare();
     }
 }
+
+TEST_F(SuffixPrefixLCSTests, TestFromFile)
+{
+    int testNumber = 10;
+    for (int t = 0; t < testNumber; ++t) {
+        if (!readAnswerFromFile(std::string("tests/") + std::to_string(t)))
+            break;
+        size_t sizeA, sizeB;
+        sizeA = A_.length();
+        sizeB = B_.length();
+        CalculateAnswer();
+        Compare();
+    }
+}
+
 
 int main(int argc, char ** argv)
 {

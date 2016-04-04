@@ -33,20 +33,6 @@ std::vector<
             }
         }
     }
-    /*for (size_t i = 0; i <= n; ++i) {
-        for (size_t j = 0; j <= m; ++j) {
-            std::cout << criticalMomentsVertical[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-    for (size_t i = 0; i <= n; ++i) {
-        for (size_t j = 0; j <= m; ++j) {
-            std::cout << criticalMomentsHorizontal[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;*/
     for (size_t j = 0; j < m; ++j) {
         ans[0][j] = (j < criticalMomentsVertical[0][m] ? 1 : 0);
     }
