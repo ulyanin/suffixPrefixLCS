@@ -3,6 +3,7 @@
 #include "suffix_prefix_lcs_long.h"
 #include <gtest/gtest.h>
 #include <random>
+#include <chrono>
 
 class SuffixPrefixLCSTests : public ::testing::Test
 {
@@ -37,14 +38,20 @@ public:
         }
     }
 
-    virtual void GenerateRightAnswer()
+    virtual double GenerateRightAnswer()
     {
-        ans_ = calculateSuffixPrefixLCS_long2(A_, B_);
+        auto start(std::chrono::steady_clock::now());
+        ans_ = calculateSuffixPrefixLCS_long(A_, B_);
+        auto end(std::chrono::steady_clock::now());
+        return std::chrono::duration_cast<std::chrono::duration<double> > (end - start).count();
     }
 
-    virtual void CalculateAnswer()
+    virtual double CalculateAnswer()
     {
+        auto start(std::chrono::steady_clock::now());
         test_ = calculateSuffixPrefixLCS(A_, B_);
+        auto end(std::chrono::steady_clock::now());
+        return std::chrono::duration_cast<std::chrono::duration<double> > (end - start).count();
     }
 
     void Compare()
@@ -159,10 +166,13 @@ TEST_F(SuffixPrefixLCSTests, BigTests)
         //std::cout << A_ << std::endl;
         //std::cout << B_ << std::endl;
         std::cout << "generated test size " << A_.size() << "x" << B_.size() << std::endl;
-        std::cout << "starting dp O(n^3) solution" << std::endl;
-        GenerateRightAnswer();
-        std::cout << "starting super dp O(n^2) solution" << std::endl;
-        CalculateAnswer();
+        std::cout << "\tstarting dp O(n^3) solution" << std::endl;
+        double s1 = GenerateRightAnswer();
+        std::cout << "\t\tcompleted for a " << s1 << " seconds" << std::endl;
+        std::cout << "\tstarting super dp O(n^2) solution" << std::endl;
+        double s2 = CalculateAnswer();
+        std::cout << "\t\tcompleted for a " << s2 << " seconds" << std::endl;
+        std::cout << std::endl;
         Compare();
     }
 }
@@ -177,10 +187,13 @@ TEST_F(SuffixPrefixLCSTests, MaxTests)
         //std::cout << A_ << std::endl;
         //std::cout << B_ << std::endl;
         std::cout << "generated test size " << A_.size() << "x" << B_.size() << std::endl;
-        std::cout << "starting dp O(n^3) solution" << std::endl;
-        GenerateRightAnswer();
-        std::cout << "starting super dp O(n^2) solution" << std::endl;
-        CalculateAnswer();
+        std::cout << "\tstarting dp O(n^3) solution" << std::endl;
+        double s1 = GenerateRightAnswer();
+        std::cout << "\t\tcompleted for a " << s1 << " seconds" << std::endl;
+        std::cout << "\tstarting super dp O(n^2) solution" << std::endl;
+        double s2 = CalculateAnswer();
+        std::cout << "\t\tcompleted for a " << s2 << " seconds" << std::endl;
+        std::cout << std::endl;
         Compare();
     }
 }
